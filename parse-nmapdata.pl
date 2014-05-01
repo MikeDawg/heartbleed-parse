@@ -25,12 +25,12 @@ print "Enter output filename:  ";
 my $userOutputFileName = <STDIN>;
 chomp $userOutputFileName;
 exit 0 if ( $userOutputFileName eq "" );
-$np->callback( \&booyah );
+$np->callback( \&parseDataSub );
 
 #
 $np->parsefile($userFileName);
 
-sub booyah {
+sub parseDataSub {
    my $host = shift;
    my @portLists;
    open( MYOUTFILE, ">>$userOutputFileName" );
