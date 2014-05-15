@@ -2,9 +2,10 @@
 #
 # Parse nmap scan tool : parse-nmapdata.pl
 # Awfully written by: Mike Harris <MikeDawg@gmail.com>
-# Version: .003
+# Version: .004
 #
-# Changes:  .003 - Cleaned up code a little more, changed shebang
+# Changes:   .004 - Fixed more bad coding errors, as per usual
+#						.003 - Cleaned up code a little more, changed shebang
 #					  .002 - Got rid of that trailing comma
 #
 # Please make sure you have installed Nmap::Parser in perl before using this script.
@@ -49,13 +50,18 @@ sub parseDataSub {
     my @portLists;
     open( my $MYOUTFILE, ">>", "$userOutputFileName" )
       || die "Can't open $userOutputFileName";
-    print $MYOUTFILE "-p";
     for my $port ( $host->tcp_ports('open') ) {
-        push @portLists, $port, ",";
+        if ( $port ne " " ) {
+            push @portLists, $port, ",";
+        }
     }
-    chop $portLists[-1];
-    print $MYOUTFILE @portLists;
-    print $MYOUTFILE " ";
-    print $MYOUTFILE $host->addr, "\n";
+    my $arraySize = @portLists;
+    if ( $arraySize > "0" ) {
+        chop $portLists[-1];
+        print $MYOUTFILE "-p";
+        print $MYOUTFILE @portLists;
+        print $MYOUTFILE " ";
+        print $MYOUTFILE $host->addr, "\n";
+    }
     close($MYOUTFILE);
 }
